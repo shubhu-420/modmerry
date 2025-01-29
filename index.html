@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Salon - Luxury Beauty Experience</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="logo.png" alt="Merry Salon Logo" class="logo-img">
+                </div>
+                <div class="menu-toggle" aria-label="Menu Toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact" class="cta-nav">Book Appointment</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1>Mod Merry</h1>
+                <p>Transformative Beauty Experiences Crafted with Precision</p>
+                <div class="hero-cta">
+                    <a href="#services" class="btn-primary">Discover Our Services</a>
+                    <a href="#contact" class="btn-secondary">Book Consultation</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <div class="about-container">
+              <h2>About Us</h2>
+              <p>Welcome to <span class="about-highlight">Mod Merry Beauty Parlor</span>, where beauty meets excellence. Our team of skilled professionals is dedicated to providing you with personalized services in a serene and luxurious environment.</p>
+              <p>From revitalizing facials to glamorous makeovers, we offer a wide range of beauty treatments that enhance your natural charm. At Radiance, every detail is designed to ensure your comfort and satisfaction.</p>
+              <button class="btn-learn-more">Learn More</button>
+            </div>
+          </section>
+          
+          
+
+
+        <section id="services" class="services-section">
+            <div class="section-header">
+                <h2>Our Signature Services</h2>
+                <p>Curated Treatments for Holistic Transformation</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-cut"></i></div>
+                    <h3>Professional Styling</h3>
+                    <p>Customized Cuts & Advanced Coloring Techniques</p>
+                    <a href="#" class="btn-tertiary">Explore Styling</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-spa"></i></div>
+                    <h3>Wellness Treatments</h3>
+                    <p>Luxury Spa Experiences & Rejuvenation</p>
+                    <a href="#" class="btn-tertiary">View Treatments</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-magic"></i></div>
+                    <h3>Professional Makeup</h3>
+                    <p>Artistry for Every Occasion & Style</p>
+                    <a href="#" class="btn-tertiary">Makeup Services</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <div class="section-header">
+                <h2>Our Portfolio</h2>
+                <p>Showcasing Transformative Beauty</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
+                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
+                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
+                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
+                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
+                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h2>Schedule Your Experience</h2>
+                    <p>Connect with Our Expert Stylists</p>
+                    <div class="contact-details">
+                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                        <p><i class="fas fa-envelope"></i> bookings@merrysalon.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Elegance Street, Beauty City</p>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <input type="tel" placeholder="Phone Number">
+                    <select required>
+                        <option value="">Select Service</option>
+                        <option>Hair Styling Consultation</option>
+                        <option>Spa Wellness Package</option>
+                        <option>Makeup Artistry</option>
+                        <option>Other Inquiry</option>
+                    </select>
+                    <textarea placeholder="Additional Details" required></textarea>
+                    <button type="submit" class="btn-primary">Request Appointment</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-sections">
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Our Services</h4>
+                    <ul>
+                        <li>Hair Styling</li>
+                        <li>Spa Treatments</li>
+                        <li>Makeup Artistry</li>
+                        <li>Bridal Packages</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="fab fa-instagram"></a>
+                        <a href="#" class="fab fa-facebook"></a>
+                        <a href="#" class="fab fa-twitter"></a>
+                        <a href="#" class="fab fa-pinterest"></a>
+                    </div>
+                    <p>Follow our beauty journey</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Merry Salon. All Rights Reserved. | Designed with Elegance</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

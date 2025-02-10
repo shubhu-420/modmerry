@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merry Salon - Luxury Beauty Experience</title>
+    <title> Mod Merry Salon - Luxury Beauty Experience</title>
     <link rel="stylesheet" href="index.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
         <nav>
             <div class="nav-container">
                 <div class="logo">
-                    <img src="logo.png" alt="Merry Salon Logo" class="logo-img">
+                    <img src="/api/placeholder/150/50" alt="Merry Salon Logo" class="logo-img">
                 </div>
                 <div class="menu-toggle" aria-label="Menu Toggle">
                     <span></span>
@@ -32,35 +32,144 @@
     </header>
 
     <main>
-        <section id="home" class="hero-section">
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <h1>Mod Merry</h1>
-                <p>Transformative Beauty Experiences Crafted with Precision</p>
-                <div class="hero-cta">
-                    <a href="#services" class="btn-primary">Discover Our Services</a>
-                    <a href="#contact" class="btn-secondary">Book Consultation</a>
+        <section class="hero">
+            <div class="image-slider">
+                <div class="slide active">
+                    <img src="IMG-20250129-WA0004.jpg" alt="Luxury Spa">
                 </div>
+                <div class="slide">
+                    <img src="IMG-20250129-WA0005.jpg" alt="Beauty Treatment">
+                </div>
+                <div class="slide">
+                    <img src="IMG-20250129-WA0006.jpg" alt="Spa Experience">
+                </div>
+                <div class="slide">
+                    <img src="IMG-20250129-WA00011.jpg" alt="Spa Experience">
+                </div>
+            </div>
+        
+            <div class="content-wrapper">
+                <div class="slide-counter">
+                    <span class="current">01</span>
+                    <span class="line"></span>
+                    <span class="total">03</span>
+                </div>
+                
+                <h2 class="accent-text">Mod Merry Salon</h2>
+                <h1 class="slide-title">Discover Your Natural Beauty</h1>
+                <div class="typewriter-container">
+                    <span class="typewriter-text"></span>
+                </div>
+                <p class="description">Experience luxury treatments and expert care in our premium beauty sanctuary. Let our skilled professionals enhance your natural beauty with personalized services.</p>
+                
+                <div class="cta-container">
+                    <a href="#services" class="cta-btn primary-btn">Explore Services</a>
+                    <a href="#booking" class="cta-btn secondary-btn">Book Now</a>
+                </div>
+            </div>
+        
+            <div class="slider-nav">
+                <button class="nav-btn prev">←</button>
+                <button class="nav-btn next">→</button>
+            </div>
+        
+            <div class="progress-bar">
+                <div class="progress"></div>
             </div>
         </section>
 
-        <section class="about-section">
-            <div class="about-container">
-              <h2>About Us</h2>
-              <p>Welcome to <span class="about-highlight">Mod Merry Beauty Parlor</span>, where beauty meets excellence. Our team of skilled professionals is dedicated to providing you with personalized services in a serene and luxurious environment.</p>
-              <p>From revitalizing facials to glamorous makeovers, we offer a wide range of beauty treatments that enhance your natural charm. At Radiance, every detail is designed to ensure your comfort and satisfaction.</p>
-              <button class="btn-learn-more">Learn More</button>
+        <div class="about-section">
+            <div class="abstract-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
             </div>
-          </section>
-          
-          
+    
+            <div class="about-grid">
+                <!-- Left Column -->
+                <div class="about-intro">
+                    <div class="intro-content">
+                        <div class="badge">About Us</div>
+                        <h2 class="slide-up">Transforming Ideas Into Reality</h2>
+                        <p class="slide-up">Your company description with an emphasis on impact and innovation.</p>
+                        
+                        <div class="experience-badge slide-up">
+                            <div class="exp-number">
+                                <span class="counter" data-target="15">0</span>
+                                <span class="plus">+</span>
+                            </div>
+                            <div class="exp-text">Years of<br>Experience</div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Right Column -->
+                <div class="about-details">
+                    <div class="stats-grid">
+                        <div class="stat-card" data-aos="zoom-in">
+                            <div class="stat-content">
+                                <div class="stat-icon">
+                                    <svg viewBox="0 0 24 24" class="icon-projects">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-number">
+                                        <span class="counter" data-target="1500">0</span>
+                                        <span class="plus">+</span>
+                                    </div>
+                                    <div class="stat-label">Customers</div>
+                                </div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+    
+                        <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+                            <div class="stat-content">
+                                <div class="stat-icon">
+                                    <svg viewBox="0 0 24 24" class="icon-clients">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="9" cy="7" r="4"/>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-number">
+                                        <span class="counter" data-target="95">0</span>
+                                        <span class="percent">%</span>
+                                    </div>
+                                    <div class="stat-label">Client Satisfaction</div>
+                                </div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="features-grid">
+                        <div class="feature-card slide-up">
+                            <h3>Our Mission</h3>
+                            <p>Empowering businesses through innovative solutions.</p>
+                        </div>
+                        <div class="feature-card slide-up">
+                            <h3>Our Vision</h3>
+                            <p>Leading the industry with cutting-edge technology.</p>
+                        </div>
+                    </div>
+    
+                  
+                </div>
+            </div>
+        </div>
+    
 
 
-        <section id="services" class="services-section">
-            <div class="section-header">
-                <h2>Our Signature Services</h2>
-                <p>Curated Treatments for Holistic Transformation</p>
-            </div>
+        <!-- <section id="services" class="services-section">
+           
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-icon"><i class="fas fa-cut"></i></div>
@@ -81,23 +190,278 @@
                     <a href="#" class="btn-tertiary">Makeup Services</a>
                 </div>
             </div>
-        </section>
+        </section> -->
 
-        <section id="gallery" class="gallery-section">
-            <div class="section-header">
-                <h2>Our Portfolio</h2>
-                <p>Showcasing Transformative Beauty</p>
+        <section class="beauty-services">
+            <div class="particle-container">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
             </div>
-            <div class="gallery-grid">
-                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
-                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
-                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
-                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
-                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
-                <div class="gallery-item" style="background-image: url('/api/placeholder/400/400');"></div>
+        
+            <div class="services-wrapper">
+                <header class="services-header">
+                    <div class="header-content">
+                        <h1 class="main-title">Our Services</h1>
+                        <p class="subtitle">Transform your look with our professional beauty services</p>
+                    </div>
+                </header>
+        
+                <div class="services-grid">
+                    <!-- Bridal Makeup -->
+                    <article class="service-item">
+                        <div class="service-visual">
+                            <img src="https://www.beautyandfashionfreaks.com/wp-content/uploads/2015/01/Stunning-Bridal-Makeup-Ideas-1.jpg" alt="Bridal Makeup" class="service-image">
+                            <div class="service-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>Bridal Makeup</h3>
+                            <p>Make your special day unforgettable with our premium bridal makeup services</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i><span>Professional Products</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Long-lasting Application</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Pre-bridal Consultation</span></li>
+                            </ul>
+                            <a href="#book-bridal" class="book-btn">
+                                <span>Book Appointment</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+        
+                    <!-- Engagement Makeup -->
+                    <article class="service-item">
+                        <div class="service-visual">
+                            <img src="https://shaadiwish.com/blog/wp-content/uploads/2020/09/engagement-makeup-looks-1.jpg" alt="Engagement Makeup" class="service-image">
+                         
+                        </div>
+                        <div class="service-content">
+                            <h3>Engagement Makeup</h3>
+                            <p>Look radiant on your engagement with our specialized makeup services</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i><span>Customized Look</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>HD Photography Ready</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Skin Prep Included</span></li>
+                            </ul>
+                            <a href="#book-engagement" class="book-btn">
+                                <span>Book Appointment</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+        
+                    <!-- Party Makeup -->
+                    <article class="service-item">
+                        <div class="service-visual">
+                            <img src="/api/placeholder/400/300" alt="Party Makeup" class="service-image">
+                            <div class="service-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>Party Makeup</h3>
+                            <p>Stand out at any event with our glamorous party makeup</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i><span>Trendy Looks</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Evening Wear Specific</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Touch-up Kit</span></li>
+                            </ul>
+                            <a href="#book-party" class="book-btn">
+                                <span>Book Appointment</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+        
+                    <!-- Airbrush Makeup -->
+                    <article class="service-item">
+                        <div class="service-visual">
+                            <img src="/api/placeholder/400/300" alt="Airbrush Makeup" class="service-image">
+                            <div class="service-icon">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>Airbrush Makeup</h3>
+                            <p>Experience flawless coverage with our airbrush makeup technique</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i><span>Lightweight Feel</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Waterproof Option</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>16+ Hour Wear</span></li>
+                            </ul>
+                            <a href="#book-airbrush" class="book-btn">
+                                <span>Book Appointment</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+        
+                    <!-- HD Makeup -->
+                    <article class="service-item">
+                        <div class="service-visual">
+                            <img src="/api/placeholder/400/300" alt="HD Makeup" class="service-image">
+                            <div class="service-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>HD Makeup</h3>
+                            <p>Camera-ready makeup perfect for photoshoots and special occasions</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i><span>Photography Perfect</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Natural Finish</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>All Lighting Ready</span></li>
+                            </ul>
+                            <a href="#book-hd" class="book-btn">
+                                <span>Book Appointment</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+        
+                    <!-- Hair Styling -->
+                    <article class="service-item">
+                        <div class="service-visual">
+                            <img src="/api/placeholder/400/300" alt="Hair Styling" class="service-image">
+                            <div class="service-icon">
+                                <i class="fas fa-cut"></i>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>Hair Styling</h3>
+                            <p>Get the perfect hairstyle to complement your look</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i><span>Latest Trends</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Heat Protection</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Style Consultation</span></li>
+                            </ul>
+                            <a href="#book-hair" class="book-btn">
+                                <span>Book Appointment</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+        
+                    <!-- Draping -->
+                    <article class="service-item">
+                        <div class="service-visual">
+                            <img src="/api/placeholder/400/300" alt="Saree Draping" class="service-image">
+                            <div class="service-icon">
+                                <i class="fas fa-female"></i>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h3>Draping</h3>
+                            <p>Expert saree and dupatta draping services for any occasion</p>
+                            <ul class="service-features">
+                                <li><i class="fas fa-check-circle"></i><span>Multiple Styles</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Secure Pinning</span></li>
+                                <li><i class="fas fa-check-circle"></i><span>Traditional & Modern</span></li>
+                            </ul>
+                            <a href="#book-draping" class="book-btn">
+                                <span>Book Appointment</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+        
+                <div class="cta-section">
+                    <div class="cta-content">
+                        <h2>Transform Your Look Today</h2>
+                        <p>Book your beauty session with our expert stylists</p>
+                        <a href="#all-services" class="view-all-btn">
+                            View All Services
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
+<!-- gallery section -->
+<section class="gallery-section">
+    <div class="gallery-container">
+        <div class="gallery-header">
+            <h2 class="section-title">Our Gallery</h2>
+            <div class="gallery-controls">
+                <button class="gallery-nav prev">&larr;</button>
+                <div class="gallery-counter">
+                    <span class="current">01</span>
+                    <span class="separator">/</span>
+                    <span class="total">22</span>
+                </div>
+                <button class="gallery-nav next">&rarr;</button>
+            </div>
+        </div>
 
+        <div class="gallery-wrapper">
+            <div class="gallery-track">
+                <div class="gallery-item active">
+                    <img src="IMG-20250129-WA0004.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0005.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0006.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0007.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0008.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0009.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0010.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0011.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0012.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0013.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0014.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0015.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0016.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0017.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0018.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0019.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0020.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0021.jpg" alt="Gallery Image">
+                </div>
+                <div class="gallery-item">
+                    <img src="IMG-20250129-WA0022.jpg" alt="Gallery Image">
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+    </div>
+</section>
         <section id="contact" class="contact-section">
             <div class="contact-container">
                 <div class="contact-info">

@@ -85,7 +85,7 @@ nav {
 }
 
 .cta-nav {
-    background: var(--color-secondary);
+   background: linear-gradient(145deg, #f472b6, #ec4899);
     color: var(--color-white) !important;
     padding: 15px 30px;
     border-radius: 50px;
@@ -619,7 +619,7 @@ a {
 }
 
 .primary-btn {
-    background: #e0a7aa;
+    background: linear-gradient(145deg, #f472b6, #ec4899);;
     color: #0a0a0a;
     border: none;
     transition: transform 0.3s ease;
@@ -749,7 +749,7 @@ a {
 }
 
 .footer a {
-    color: #ff5722;
+    background: linear-gradient(145deg, #f472b6, #ec4899);
     text-decoration: none;
 }
 
@@ -1240,7 +1240,7 @@ a {
 .particle {
     position: absolute;
     border-radius: 50%;
-    background: linear-gradient(145deg, #fbcfe8, #f9a8d4);
+    background: linear-gradient(145deg, #f472b6, #ec4899);
     filter: blur(8px);
     opacity: 0.3;
     animation: particleFloat 20s infinite;
@@ -1352,7 +1352,7 @@ a {
 .service-visual {
     position: relative;
     padding: 40px;
-    background: var(--gradient-primary);
+    background: linear-gradient(145deg, #f472b6, #ec4899);
     text-align: center;
 }
 
@@ -1420,7 +1420,7 @@ a {
     align-items: center;
     gap: 10px;
     padding: 12px 25px;
-    background: var(--gradient-primary);
+    background: linear-gradient(145deg, #f472b6, #ec4899);
     color: var(--color-text-light);
     text-decoration: none;
     border-radius: 25px;
@@ -1455,7 +1455,7 @@ a {
 .cta-section {
     text-align: center;
     padding: 60px;
-    background: var(--gradient-secondary);
+    background: linear-gradient(145deg, #f472b6, #ec4899);
     border-radius: 20px;
     margin-top: 80px;
 }

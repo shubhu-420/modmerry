@@ -32,38 +32,51 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Form Submission Handler
-  const contactForm = document.querySelector('.contact-form');
-  contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      // Basic form validation
-      const inputs = contactForm.querySelectorAll('input, select, textarea');
-      let isValid = true;
-      
-      inputs.forEach(input => {
-          if (!input.value.trim()) {
-              input.classList.add('error');
-              isValid = false;
-          } else {
-              input.classList.remove('error');
-          }
-      });
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('bookingForm');
+    const inputs = form.querySelectorAll('input, select, textarea');
 
-      if (isValid) {
-          // Simulate form submission
-          const submitBtn = contactForm.querySelector('button');
-          submitBtn.textContent = 'Sending...';
-          submitBtn.disabled = true;
+    // Add floating label effect
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
 
-          // Simulated async submission
-          setTimeout(() => {
-              alert('Thank you! We will contact you soon.');
-              contactForm.reset();
-              submitBtn.textContent = 'Request Appointment';
-              submitBtn.disabled = false;
-          }, 1500);
-      }
-  });
+        input.addEventListener('blur', function() {
+            if (!this.value) {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+    });
+
+    // Form submission handler
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Gather form data
+        const formData = {
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            service: document.getElementById('service').value,
+            details: document.getElementById('details').value
+        };
+
+        // Here you would typically send the data to your server
+        console.log('Form submitted:', formData);
+        
+        // Show success message (you can customize this)
+        alert('Thank you! Your appointment request has been submitted.');
+        form.reset();
+    });
+
+    // Phone number formatting
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', function(e) {
+        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+});
 
   // Gallery Hover Effects
   const galleryItems = document.querySelectorAll('.gallery-item');

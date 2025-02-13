@@ -7,13 +7,16 @@
     <link rel="stylesheet" href="index.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@200..700&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Squada+One&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <nav>
             <div class="nav-container">
                 <div class="logo">
-                    <img src="/api/placeholder/150/50" alt="Merry Salon Logo" class="logo-img">
+                    <img src="image.png" alt="Merry Salon Logo" class="logo-img">
                 </div>
                 <div class="menu-toggle" aria-label="Menu Toggle">
                     <span></span>
@@ -90,8 +93,8 @@
                 <div class="about-intro">
                     <div class="intro-content">
                         <div class="badge">About Us</div>
-                        <h2 class="slide-up">Transforming Ideas Into Reality</h2>
-                        <p class="slide-up">Your company description with an emphasis on impact and innovation.</p>
+                        <h2 class="slide-up">Your beauty, Our passion</h2>
+                        <p class="slide-up">Getting married in Varanasi and having trouble finding a bridal makeup artists? Well Mod Merry Salon is one of the best wedding makeup artist based out of Varanasi. Mod Merry Salon is professional bridal makeup artist, specializing in bridal makeup and can provides services to doll you up for your wedding and pre wedding functions. The team at Mod Merry Salon is an expert when it comes to wedding day makeup, and has received excellent reviews by all the brides we have worked on till date. We work closely with all  brides, personalizing the entire process and instilling confidence on the big day. The team at Mod Merry Salon loves to play with makeup, hairstyling and making people look their best during the wedding festivities</p>
                         
                         <div class="experience-badge slide-up">
                             <div class="exp-number">
@@ -150,7 +153,7 @@
                         </div>
                     </div>
     
-                    <div class="features-grid">
+                    <!-- <div class="features-grid">
                         <div class="feature-card slide-up">
                             <h3>Our Mission</h3>
                             <p>Empowering businesses through innovative solutions.</p>
@@ -159,7 +162,7 @@
                             <h3>Our Vision</h3>
                             <p>Leading the industry with cutting-edge technology.</p>
                         </div>
-                    </div>
+                    </div> -->
     
                   
                 </div>
@@ -452,33 +455,62 @@
         </div>
     </div>
 </section>
-        <section id="contact" class="contact-section">
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h2>Schedule Your Experience</h2>
-                    <p>Connect with Our Expert Stylists</p>
-                    <div class="contact-details">
-                        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                        <p><i class="fas fa-envelope"></i> bookings@merrysalon.com</p>
-                        <p><i class="fas fa-map-marker-alt"></i> 123 Elegance Street, Beauty City</p>
+<section id="contact" class="contact-section">
+    <div class="contact-container">
+        <div class="contact-info">
+            <div class="info-content">
+                <h2>Schedule Your Experience</h2>
+                <p class="subtitle">Connect with Our Expert Stylists</p>
+                <div class="contact-details">
+                    <div class="detail-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>bookings@merrysalon.com</p>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>123 Elegance Street, Beauty City</p>
                     </div>
                 </div>
-                <form class="contact-form">
-                    <input type="text" placeholder="Full Name" required>
-                    <input type="email" placeholder="Email Address" required>
-                    <input type="tel" placeholder="Phone Number">
-                    <select required>
-                        <option value="">Select Service</option>
-                        <option>Hair Styling Consultation</option>
-                        <option>Spa Wellness Package</option>
-                        <option>Makeup Artistry</option>
-                        <option>Other Inquiry</option>
-                    </select>
-                    <textarea placeholder="Additional Details" required></textarea>
-                    <button type="submit" class="btn-primary">Request Appointment</button>
-                </form>
             </div>
-        </section>
+        </div>
+        <form class="contact-form" id="bookingForm">
+            <div class="form-group">
+                <input type="text" id="fullName" placeholder="Full Name" required>
+                <span class="focus-border"></span>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Email Address" required>
+                <span class="focus-border"></span>
+            </div>
+            <div class="form-group">
+                <input type="tel" id="phone" placeholder="Phone Number" required>
+                <span class="focus-border"></span>
+            </div>
+            <div class="form-group">
+                <select id="service" required>
+                    <option value="">Select Service</option>
+                    <option value="hair">Hair Styling Consultation</option>
+                    <option value="spa">Spa Wellness Package</option>
+                    <option value="makeup">Makeup Artistry</option>
+                    <option value="other">Other Inquiry</option>
+                </select>
+                <span class="focus-border"></span>
+            </div>
+            <div class="form-group">
+                <textarea id="details" placeholder="Additional Details" required></textarea>
+                <span class="focus-border"></span>
+            </div>
+            <button type="submit" class="btn-primary">
+                <span>Request Appointment</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+    </div>
+</section>
     </main>
 
     <footer>
@@ -505,7 +537,7 @@
                 <div class="footer-section">
                     <h4>Connect With Us</h4>
                     <div class="social-links">
-                        <a href="#" class="fab fa-instagram"></a>
+                        <a href="https://www.instagram.com/mod_merry_salon/" class="fab fa-instagram"></a>
                         <a href="#" class="fab fa-facebook"></a>
                         <a href="#" class="fab fa-twitter"></a>
                         <a href="#" class="fab fa-pinterest"></a>

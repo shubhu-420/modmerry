@@ -12,24 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
       heroContent.style.transform = 'translateY(0)';
   }, 500);
 
-  // Mobile Navigation Toggle
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navMenu = document.querySelector('.nav-menu');
-  
-  menuToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-      menuToggle.classList.toggle('open');
-  });
+/*Navbar handling */
 
-  // Smooth Scrolling
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          document.querySelector(this.getAttribute('href')).scrollIntoView({
-              behavior: 'smooth'
-          });
-      });
-  });
+
+
 
   // Form Submission Handler
   document.addEventListener('DOMContentLoaded', function() {

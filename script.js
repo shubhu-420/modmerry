@@ -12,10 +12,24 @@ document.addEventListener('DOMContentLoaded', () => {
       heroContent.style.transform = 'translateY(0)';
   }, 500);
 
-/*Navbar handling */
+  // Mobile Navigation Toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+  
+  menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      menuToggle.classList.toggle('open');
+  });
 
-
-
+  // Smooth Scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+              behavior: 'smooth'
+          });
+      });
+  });
 
   // Form Submission Handler
   document.addEventListener('DOMContentLoaded', function() {
@@ -626,3 +640,197 @@ document.addEventListener('DOMContentLoaded', function() {
         slideInterval = setInterval(nextSlide, 5000);
     });
 });
+
+
+
+class ShowcaseSystem {
+    constructor() {
+        this.maxShowcases = 7;
+        this.activeShowcases = new Set();
+        this.showcaseContent = {
+            audio: {
+                category: 'Electronics',
+                title: 'Premium Audio',
+                items: [
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Experience Sound',
+                        description: 'Immerse yourself in crystal-clear audio with our premium headphones.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Wireless Freedom',
+                        description: 'Enjoy seamless connectivity with advanced Bluetooth technology.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Lasting Comfort',
+                        description: 'Designed for extended wear with premium materials.'
+                    }
+                ]
+            },
+            eyewear: {
+                category: 'Wearables',
+                title: 'Smart Eyewear',
+                items: [
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Smart Vision',
+                        description: 'Navigate your world with intelligent eyewear technology.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Stylish Design',
+                        description: 'Classic looks meet cutting-edge innovation.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Always Connected',
+                        description: 'Stay in touch with seamless smartphone integration.'
+                    }
+                ]
+            },
+            products: {
+                category: 'Accessories',
+                title: 'Innovative Products',
+                items: [
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Capture Moments',
+                        description: 'Create lasting memories with our innovative camera technology.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Stay Powered',
+                        description: 'Keep your devices charged with advanced power solutions.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Enhanced Protection',
+                        description: 'Protect your devices with premium cases and covers.'
+                    }
+                ]
+            }
+        };
+        this.initialize();
+    }
+
+    initialize() {
+        document.querySelectorAll('.showcase-trigger').forEach(button => {
+            button.addEventListener('click', () => {
+                const showcaseId = button.dataset.showcase;
+                this.openShowcase(showcaseId);
+            });
+        });
+    }
+
+    openShowcase(showcaseId) {
+        if (this.activeShowcases.size >= this.maxShowcases) {
+            alert('Maximum of 7 showcases allowed!');
+            return;
+        }
+
+        const content = this.showcaseContent[showcaseId];
+        if (!content) return;
+
+        const showcaseHTML = this.generateShowcaseHTML(showcaseId, content);
+        document.body.insertAdjacentHTML('beforeend', showcaseHTML);
+
+        const showcaseElement = document.getElementById(`showcase-${showcaseId}`);
+        this.setupShowcaseEvents(showcaseId, showcaseElement);
+        this.displayShowcase(showcaseId, showcaseElement);
+        this.initializeCarousel(showcaseId);
+    }
+
+    generateShowcaseHTML(showcaseId, content) {
+        const itemsHTML = content.items.map((item, index) => `
+            <div class="showcase-item ${index === 0 ? 'showcase-current' : ''}" data-index="${index}">
+                <img src="${item.image}" alt="${item.heading}" class="showcase-image">
+                <h3 class="showcase-heading">${item.heading}</h3>
+                <p class="showcase-description">${item.description}</p>
+            </div>
+        `).join('');
+
+        const dotsHTML = content.items.map((_, index) => `
+            <div class="showcase-dot ${index === 0 ? 'showcase-current' : ''}" data-index="${index}"></div>
+        `).join('');
+
+        return `
+            <div class="showcase-backdrop" id="showcase-${showcaseId}">
+                <div class="showcase-window">
+                    <div class="showcase-header">
+                        <div class="showcase-titles">
+                            <span class="showcase-category">${content.category}</span>
+                            <h2 class="showcase-title">${content.title}</h2>
+                        </div>
+                        <button class="showcase-close" data-showcase-id="${showcaseId}">×</button>
+                    </div>
+                    <div class="showcase-body">
+                        <div class="showcase-carousel" id="carousel-${showcaseId}">
+                            ${itemsHTML}
+                            <div class="showcase-navigation">
+                                <button class="showcase-nav-button prev" onclick="showcaseManager.changeItem('${showcaseId}', -1)">‹</button>
+                                <button class="showcase-nav-button next" onclick="showcaseManager.changeItem('${showcaseId}', 1)">›</button>
+                            </div>
+                            <div class="showcase-dots">
+                                ${dotsHTML}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    setupShowcaseEvents(showcaseId, element) {
+        const closeBtn = element.querySelector('.showcase-close');
+        closeBtn.addEventListener('click', () => this.closeShowcase(showcaseId));
+        
+        element.addEventListener('click', (e) => {
+            if (e.target === element) this.closeShowcase(showcaseId);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') this.closeShowcase(showcaseId);
+        });
+    }
+
+    displayShowcase(showcaseId, element) {
+        element.style.display = 'flex';
+        this.activeShowcases.add(showcaseId);
+    }
+
+    closeShowcase(showcaseId) {
+        const element = document.getElementById(`showcase-${showcaseId}`);
+        if (element) {
+            element.remove();
+            this.activeShowcases.delete(showcaseId);
+        }
+    }
+
+    initializeCarousel(showcaseId) {
+        const carousel = document.getElementById(`carousel-${showcaseId}`);
+        carousel.currentItem = 0;
+    }
+
+    changeItem(showcaseId, direction) {
+        const carousel = document.getElementById(`carousel-${showcaseId}`);
+        const items = carousel.querySelectorAll('.showcase-item');
+        const dots = carousel.querySelectorAll('.showcase-dot');
+        
+        let newIndex = carousel.currentItem + direction;
+        
+        if (newIndex < 0) newIndex = items.length - 1;
+        if (newIndex >= items.length) newIndex = 0;
+        
+        items[carousel.currentItem].classList.remove('showcase-current');
+        dots[carousel.currentItem].classList.remove('showcase-current');
+        
+        items[newIndex].classList.add('showcase-current');
+        dots[newIndex].classList.add('showcase-current');
+        
+        carousel.currentItem = newIndex;
+    }
+}
+
+const showcaseManager = new ShowcaseSystem();

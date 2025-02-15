@@ -314,10 +314,15 @@ footer {
     display: flex;
     justify-content: space-between;
 }
-
+.footer-section ul :hover{
+  color: pink;
+}
 .footer-section {
     flex: 1;
     margin-right: 30px;
+}
+.footer-section li:hover {
+     color: pink;
 }
 
 .footer-section h4 {
@@ -359,6 +364,9 @@ footer {
     margin-top: 30px;
     padding-top: 20px;
     border-top: 1px solid rgba(255,255,255,0.1);
+}
+.footer-bottom :hover {
+    color: pink;
 }
 
 /* Responsive Design */

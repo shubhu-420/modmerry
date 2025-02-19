@@ -46,6 +46,7 @@ nav {
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 30px;
+   
 }
 
 .logo-img {
@@ -58,6 +59,7 @@ nav {
     list-style: none;
     align-items: center;
     gap: 40px;
+    background-color: rgb(209, 182, 101);
 }
 
 .nav-menu li a {

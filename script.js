@@ -649,13 +649,13 @@ class ShowcaseSystem {
         this.activeShowcases = new Set();
         this.showcaseContent = {
             audio: {
-                category: 'Electronics',
-                title: 'Premium Audio',
+                category: 'Our Clients',
+                title: 'Bridal Makeup',
                 items: [
                     {
-                        image: '/api/placeholder/800/400',
-                        heading: 'Experience Sound',
-                        description: 'Immerse yourself in crystal-clear audio with our premium headphones.'
+                        image: 'bridal.jpg',
+                        // heading: 'Experience Sound',
+                        // description: 'Immerse yourself in crystal-clear audio with our premium headphones.'
                     },
                     {
                         image: '/api/placeholder/800/400',
@@ -670,27 +670,117 @@ class ShowcaseSystem {
                 ]
             },
             eyewear: {
-                category: 'Wearables',
-                title: 'Smart Eyewear',
+                category: 'Our Clients',
+                title: 'Engagement Makeup',
                 items: [
                     {
-                        image: '/api/placeholder/800/400',
+                        image: 'IMG-20250219-WA0009.jpg',
                         heading: 'Smart Vision',
                         description: 'Navigate your world with intelligent eyewear technology.'
                     },
                     {
-                        image: '/api/placeholder/800/400',
+                        image: 'IMG-20250219-WA0012.jpg',
                         heading: 'Stylish Design',
                         description: 'Classic looks meet cutting-edge innovation.'
                     },
                     {
-                        image: '/api/placeholder/800/400',
+                        image: 'IMG-20250219-WA0010.jpg',
                         heading: 'Always Connected',
                         description: 'Stay in touch with seamless smartphone integration.'
                     }
                 ]
             },
             products: {
+                category: 'Accessories',
+                title: 'Innovative Products',
+                items: [
+                    {
+                        image: 'IMG-20250219-WA0018.jpg',
+                        heading: 'Capture Moments',
+                        description: 'Create lasting memories with our innovative camera technology.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Stay Powered',
+                        description: 'Keep your devices charged with advanced power solutions.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Enhanced Protection',
+                        description: 'Protect your devices with premium cases and covers.'
+                    }
+                ]
+            },
+            hdmakeup: {
+                category: 'Accessories',
+                title: 'Innovative Products',
+                items: [
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Capture Moments',
+                        description: 'Create lasting memories with our innovative camera technology.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Stay Powered',
+                        description: 'Keep your devices charged with advanced power solutions.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Enhanced Protection',
+                        description: 'Protect your devices with premium cases and covers.'
+                    }
+                ]
+            },
+            partymakeup: {
+                category: 'Accessories',
+                title: 'Innovative Products',
+                items: [
+                    {
+                        image: 'IMG-20250219-WA0018.jpg',
+                        heading: 'Capture Moments',
+                        description: 'Create lasting memories with our innovative camera technology.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Stay Powered',
+                        description: 'Keep your devices charged with advanced power solutions.'
+                    },
+                    {
+                        image: '/api/placeholder/800/400',
+                        heading: 'Enhanced Protection',
+                        description: 'Protect your devices with premium cases and covers.'
+                    }
+                ]
+            },
+            hairstyle: {
+                category: 'Accessories',
+                title: 'Innovative Products',
+                items: [
+                    {
+                        image: 'hair/IMG-20250219-WA0013.jpg',
+                        heading: 'Capture Moments',
+                        description: 'Create lasting memories with our innovative camera technology.'
+                    },
+                    {
+                        image: 'hair/IMG-20250219-WA0014.jpg',
+                        heading: 'Stay Powered',
+                        description: 'Keep your devices charged with advanced power solutions.'
+                    },
+                    {
+                        image: 'hair/IMG-20250219-WA0015.jpg',
+                        heading: 'Enhanced Protection',
+                        description: 'Protect your devices with premium cases and covers.'
+                    },
+                    {
+                        image: 'hair/IMG-20250219-WA0016.jpg',
+                        heading: 'Enhanced Protection',
+                        description: 'Protect your devices with premium cases and covers.'
+                    },
+
+                ]
+            },
+            newsome: {
                 category: 'Accessories',
                 title: 'Innovative Products',
                 items: [
@@ -746,8 +836,7 @@ class ShowcaseSystem {
         const itemsHTML = content.items.map((item, index) => `
             <div class="showcase-item ${index === 0 ? 'showcase-current' : ''}" data-index="${index}">
                 <img src="${item.image}" alt="${item.heading}" class="showcase-image">
-                <h3 class="showcase-heading">${item.heading}</h3>
-                <p class="showcase-description">${item.description}</p>
+               
             </div>
         `).join('');
 

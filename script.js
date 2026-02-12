@@ -420,6 +420,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.contact-form');
     if (!form) return;
 
+    // Keep the booking service dropdown synced with the Services section
+    const syncServiceDropdownFromCards = () => {
+        const serviceSelect = document.getElementById('service');
+        if (!serviceSelect) return;
+
+        const titles = Array.from(document.querySelectorAll('#services .service-card h3'))
+            .map((el) => (el.textContent || '').trim())
+            .filter(Boolean);
+
+        const uniqueTitles = Array.from(new Set(titles));
+        if (!uniqueTitles.length) return;
+
+        // Preserve the first placeholder option (value="") if present.
+        const placeholder = serviceSelect.querySelector('option[value=""]');
+
+        Array.from(serviceSelect.querySelectorAll('option')).forEach((opt) => {
+            if (opt !== placeholder) opt.remove();
+        });
+
+        if (!placeholder) {
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = 'Select Service';
+            serviceSelect.appendChild(opt);
+        }
+
+        const slugify = (value) =>
+            value
+                .toLowerCase()
+                .replace(/&/g, 'and')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+
+        uniqueTitles.forEach((title) => {
+            const opt = document.createElement('option');
+            opt.value = slugify(title);
+            opt.textContent = title;
+            serviceSelect.appendChild(opt);
+        });
+    };
+
+    syncServiceDropdownFromCards();
+
     const inputs = form.querySelectorAll('input, select, textarea');
 
     inputs.forEach(input => {

@@ -195,11 +195,7 @@ nav.scroll-up {
 }
 
 nav.scrolled .nav-container {
-    padding: 0.85rem 2rem;
-}
-
-nav.scrolled .logo-img {
-    max-height: 50px;
+    padding: 1rem 2rem;
 }
 
 .nav-container {
@@ -321,20 +317,10 @@ nav.scrolled .logo-img {
 .menu-toggle span {
     display: block;
     width: 100%;
-    height: 2px;
-    background: rgba(17, 24, 39, 0.88);
+    height: 2.5px;
+    background: rgba(17, 24, 39, 0.90);
     border-radius: 9999px;
     transition: transform var(--transition-base), opacity var(--transition-base), background var(--transition-base);
-}
-
-.menu-toggle span:nth-child(2) {
-    width: 78%;
-    margin-left: auto;
-}
-
-.menu-toggle span:nth-child(3) {
-    width: 56%;
-    margin-left: auto;
 }
 
 body.nav-open {
@@ -379,6 +365,8 @@ body.nav-open .nav-backdrop {
 
     .nav-container {
         max-width: none;
+        width: 100%;
+        margin: 0;
         padding: 0.85rem 1rem;
     }
 
@@ -387,8 +375,11 @@ body.nav-open .nav-backdrop {
     }
 
     .logo {
-        padding: 0.55rem 0.8rem;
-        border-radius: var(--radius-full);
+        width: 60px;
+        height: 60px;
+        min-height: 60px;
+        padding: 0;
+        border-radius: 9999px;
         background: linear-gradient(
             180deg,
             rgba(255, 255, 255, 0.92),
@@ -398,6 +389,9 @@ body.nav-open .nav-backdrop {
         backdrop-filter: saturate(175%) blur(18px);
         -webkit-backdrop-filter: saturate(175%) blur(18px);
         box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .logo-img {
@@ -507,6 +501,10 @@ body.nav-open .nav-backdrop {
 
     .menu-toggle {
         display: flex;
+        width: 60px;
+        height: 60px;
+        padding: 18px 16px;
+        border-radius: 9999px;
     }
 
     .menu-toggle.open span:nth-child(1) {
@@ -688,9 +686,24 @@ body.nav-open .nav-backdrop {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     line-height: 1.15;
+    /* Reserve space so the typewriter text doesn't shift layout */
+    --typewriter-lines: 2;
+    min-height: calc(var(--typewriter-lines) * 1.15em);
     margin-bottom: 1.5rem;
     animation: fadeInUp 0.8s ease-out 0.2s backwards;
     letter-spacing: -0.02em;
+}
+
+@media screen and (max-width: 768px) {
+    .hero-title {
+        --typewriter-lines: 3;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .hero-title {
+        --typewriter-lines: 4;
+    }
 }
 
 .typewriter-container {

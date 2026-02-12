@@ -480,7 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const WA_NUMBER = '917887236773';
+        const WA_NUMBER = '919026770058';
 
         const fullName = (document.getElementById('fullName')?.value || '').trim();
         const email = (document.getElementById('email')?.value || '').trim();

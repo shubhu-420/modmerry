@@ -149,17 +149,57 @@ nav {
     position: fixed;
     width: 100%;
     top: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.86),
+        rgba(255, 255, 255, 0.68)
+    );
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
     z-index: 1000;
-    transition: all var(--transition-base);
+    transform: translate3d(0, 0, 0);
+    transition: background var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
+}
+
+nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+        1200px 80px at 20% 0%,
+        rgba(255, 255, 255, 0.75),
+        rgba(255, 255, 255, 0) 70%
+    );
+    opacity: 0.8;
 }
 
 nav.scrolled {
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.94),
+        rgba(255, 255, 255, 0.78)
+    );
+    box-shadow: 0 16px 40px rgba(17, 24, 39, 0.10);
+    border-bottom-color: rgba(255, 255, 255, 0.34);
+}
+
+nav.scroll-down {
+    transform: translate3d(0, -110%, 0);
+}
+
+nav.scroll-up {
+    transform: translate3d(0, 0, 0);
+}
+
+nav.scrolled .nav-container {
+    padding: 0.85rem 2rem;
+}
+
+nav.scrolled .logo-img {
+    max-height: 50px;
 }
 
 .nav-container {
@@ -250,24 +290,72 @@ nav.scrolled {
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 32px;
-    height: 24px;
+    width: 44px;
+    height: 44px;
     cursor: pointer;
     z-index: 1001;
     position: relative;
-    background: transparent;
-    border: 0;
-    padding: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.92),
+        rgba(255, 255, 255, 0.58)
+    );
+    backdrop-filter: saturate(180%) blur(18px);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    padding: 11px 10px;
+    border-radius: 9999px;
+    box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.85);
     appearance: none;
+}
+
+.menu-toggle:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.menu-toggle:active {
+    transform: translateY(0);
 }
 
 .menu-toggle span {
     display: block;
     width: 100%;
-    height: 3px;
-    background: var(--gradient-primary);
-    border-radius: 3px;
-    transition: all var(--transition-base);
+    height: 2px;
+    background: rgba(17, 24, 39, 0.88);
+    border-radius: 9999px;
+    transition: transform var(--transition-base), opacity var(--transition-base), background var(--transition-base);
+}
+
+.menu-toggle span:nth-child(2) {
+    width: 78%;
+    margin-left: auto;
+}
+
+.menu-toggle span:nth-child(3) {
+    width: 56%;
+    margin-left: auto;
+}
+
+body.nav-open {
+    overflow: hidden;
+}
+
+.nav-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.24);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+    z-index: 999;
+}
+
+body.nav-open .nav-backdrop {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* ============================================
@@ -276,31 +364,58 @@ nav.scrolled {
 
 @media screen and (max-width: 1024px) {
     .nav-menu {
-        display: none;
+        display: flex;
         position: fixed;
         top: 0;
         right: 0;
         width: 100%;
-        max-width: 400px;
+        max-width: 380px;
         height: 100vh;
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(30px);
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.84),
+            rgba(255, 255, 255, 0.62)
+        );
+        backdrop-filter: saturate(190%) blur(34px);
+        -webkit-backdrop-filter: saturate(190%) blur(34px);
         flex-direction: column;
         align-items: flex-start;
-        justify-content: center;
-        padding: 4rem 3rem;
+        justify-content: flex-start;
+        padding: 6.25rem 1.25rem 1.5rem;
         box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+        border-left: 1px solid rgba(255, 255, 255, 0.34);
+        border-top-left-radius: var(--radius-xl);
+        border-bottom-left-radius: var(--radius-xl);
+        box-shadow: -24px 0 70px rgba(17, 24, 39, 0.14);
         transform: translateX(100%);
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+        gap: 0.4rem;
+        z-index: 1002;
+    }
+
+    .nav-menu::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-top-left-radius: var(--radius-xl);
+        border-bottom-left-radius: var(--radius-xl);
+        background: radial-gradient(
+            1000px 240px at 10% 0%,
+            rgba(255, 255, 255, 0.70),
+            rgba(255, 255, 255, 0) 60%
+        );
+        opacity: 0.9;
     }
 
     .nav-menu.active {
-        display: flex;
         transform: translateX(0);
+        pointer-events: auto;
     }
 
     .nav-menu li {
-        margin: 1rem 0;
+        margin: 0;
         width: 100%;
         opacity: 0;
         transform: translateX(30px);
@@ -319,13 +434,31 @@ nav.scrolled {
     .nav-menu.active li:nth-child(5) { transition-delay: 0.3s; }
 
     .nav-menu li a {
-        font-size: 1.3rem;
-        padding: 0.5rem 0;
-        display: block;
+        font-size: 1.1rem;
+        padding: 0.9rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.32);
+        backdrop-filter: saturate(170%) blur(16px);
+        -webkit-backdrop-filter: saturate(170%) blur(16px);
+        box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+        font-weight: 900;
+    }
+
+    .nav-menu li a::before {
+        display: none;
+    }
+
+    .nav-menu li a:hover {
+        background: rgba(255, 255, 255, 0.70);
+        border-color: rgba(255, 255, 255, 0.38);
     }
 
     .cta-nav {
-        margin-top: 1.5rem;
+        margin-top: 0.8rem;
         display: block;
         text-align: center;
         width: 100%;
@@ -336,7 +469,8 @@ nav.scrolled {
     }
 
     .menu-toggle.open span:nth-child(1) {
-        transform: rotate(45deg) translate(8px, 8px);
+        transform: rotate(45deg) translate(6px, 6px);
+        background: var(--color-primary-dark);
     }
 
     .menu-toggle.open span:nth-child(2) {
@@ -345,7 +479,10 @@ nav.scrolled {
     }
 
     .menu-toggle.open span:nth-child(3) {
-        transform: rotate(-45deg) translate(8px, -8px);
+        width: 100%;
+        margin-left: 0;
+        transform: rotate(-45deg) translate(6px, -6px);
+        background: var(--color-primary-dark);
     }
 }
 
@@ -464,6 +601,10 @@ nav.scrolled {
 
 .hero-text {
     z-index: 2;
+}
+
+.hero-portrait-slot {
+    display: none;
 }
 
 .hero-badge {
@@ -716,6 +857,22 @@ nav.scrolled {
     position: relative;
     z-index: 2;
     animation: fadeInRight 1s ease-out 0.4s backwards;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hero-gallery::before {
+    content: '';
+    position: absolute;
+    inset: -14% -18% -14% -18%;
+    background:
+        radial-gradient(circle at 65% 35%, rgba(244, 114, 182, 0.30), transparent 55%),
+        radial-gradient(circle at 35% 70%, rgba(236, 72, 153, 0.22), transparent 58%),
+        radial-gradient(circle at 55% 55%, rgba(131, 24, 67, 0.12), transparent 62%);
+    filter: blur(34px);
+    opacity: 0.75;
+    z-index: -1;
+    pointer-events: none;
 }
 
 .hero-portrait {
@@ -727,6 +884,9 @@ nav.scrolled {
     background: rgba(255, 255, 255, 0.65);
     border: 1px solid rgba(244, 114, 182, 0.22);
     box-shadow: var(--shadow-xl);
+    justify-self: end;
+    will-change: transform;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .hero-portrait::before {
@@ -750,9 +910,21 @@ nav.scrolled {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 28%;
     transform: scale(1.03);
     transition: opacity 450ms ease, transform 900ms ease;
     opacity: 1;
+}
+
+@media (hover: hover) {
+    .hero-portrait:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .hero-portrait:hover .hero-portrait-img {
+        transform: scale(1.07);
+    }
 }
 
 .hero-portrait.is-fading .hero-portrait-img {
@@ -785,6 +957,7 @@ nav.scrolled {
     color: rgba(17, 24, 39, 0.9);
     font-weight: 800;
     backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-sm);
 }
 
 .hero-portrait-label .dot {
@@ -2393,8 +2566,13 @@ footer::before {
     }
 
     .hero-gallery {
+        display: none;
+    }
+
+    .hero-portrait-slot {
         display: grid;
         place-items: center;
+        margin: 1rem auto 0;
     }
 
     .hero-portrait {
@@ -2412,6 +2590,11 @@ footer::before {
         gap: 2.5rem;
     }
 
+    .hero-highlights {
+        justify-content: center;
+        margin: -0.5rem 0 1.25rem;
+    }
+
     .cta-container {
         flex-direction: column;
         gap: 1rem;
@@ -2425,6 +2608,8 @@ footer::before {
 
     .hero-portrait {
         width: min(380px, 100%);
+        aspect-ratio: 4 / 5;
+        max-height: 520px;
     }
 }
 
@@ -2440,6 +2625,8 @@ footer::before {
     .hero-portrait {
         width: 100%;
         border-radius: 22px;
+        aspect-ratio: 4 / 5;
+        max-height: 460px;
     }
 
     .hero-portrait::before {

@@ -15,12 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile Navigation Toggle
   const menuToggle = document.querySelector('.menu-toggle');
   const navMenu = document.querySelector('.nav-menu');
+    const navBackdrop = document.querySelector('[data-nav-backdrop]');
 
   const setMenuState = (isOpen) => {
       navMenu.classList.toggle('active', isOpen);
       menuToggle.classList.toggle('open', isOpen);
       menuToggle.setAttribute('aria-expanded', String(isOpen));
       menuToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      document.body.classList.toggle('nav-open', isOpen);
+      if (navBackdrop) navBackdrop.setAttribute('aria-hidden', String(!isOpen));
   };
 
   if (menuToggle && navMenu) {
@@ -28,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const isOpen = !navMenu.classList.contains('active');
           setMenuState(isOpen);
       });
+
+      navBackdrop?.addEventListener('click', () => setMenuState(false));
 
       navMenu.querySelectorAll('a[href^="#"]').forEach((link) => {
           link.addEventListener('click', () => setMenuState(false));
@@ -89,15 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  // Scroll-activated Navigation Shadow
-  window.addEventListener('scroll', () => {
-      const nav = document.querySelector('nav');
-      if (window.scrollY > 50) {
-          nav.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
-      } else {
-          nav.style.boxShadow = 'none';
-      }
-  });
+  // Navigation scroll styling is handled later via class toggles.
 
   // Accessibility Enhancements
   const focusableElements = document.querySelectorAll('a, button, input, select, textarea');
@@ -130,6 +127,51 @@ document.addEventListener('DOMContentLoaded', () => {
     let timer = null;
     let isPaused = false;
 
+    const waitForLoaded = (imageEl) => {
+        if (!imageEl) return Promise.resolve();
+        // If already loaded enough to paint, resolve immediately.
+        if (imageEl.complete && imageEl.naturalWidth > 0) return Promise.resolve();
+
+        return new Promise((resolve) => {
+            const done = () => {
+                imageEl.removeEventListener('load', done);
+                imageEl.removeEventListener('error', done);
+                resolve();
+            };
+
+            imageEl.addEventListener('load', done, { once: true });
+            imageEl.addEventListener('error', done, { once: true });
+
+            // Safety timeout so we never hang.
+            window.setTimeout(done, 2500);
+        });
+    };
+
+    const preloadAndWait = async (src) => {
+        if (!src) return;
+        const pre = new Image();
+        pre.src = src;
+        try {
+            // decode() is best-case, but not always available.
+            await pre.decode?.();
+            if (pre.complete && pre.naturalWidth > 0) return;
+        } catch {
+            // ignore decode failures
+        }
+
+        // Fallback: wait for load/error/timeout
+        await new Promise((resolve) => {
+            const done = () => {
+                pre.removeEventListener('load', done);
+                pre.removeEventListener('error', done);
+                resolve();
+            };
+            pre.addEventListener('load', done, { once: true });
+            pre.addEventListener('error', done, { once: true });
+            window.setTimeout(done, 2500);
+        });
+    };
+
     const preload = (src) => {
         const pre = new Image();
         pre.src = src;
@@ -140,14 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
         wrap.classList.add('is-fading');
         bgWrap?.classList.add('is-fading');
 
-        // Preload + decode for smoother swap
-        try {
-            const pre = new Image();
-            pre.src = nextSrc;
-            await pre.decode?.();
-        } catch {
-            // ignore decode failures
-        }
+        // Only swap once the next image is ready to paint.
+        await preloadAndWait(nextSrc);
 
         window.setTimeout(() => {
             img.src = nextSrc;
@@ -182,9 +218,40 @@ document.addEventListener('DOMContentLoaded', () => {
         isPaused = false;
     });
 
-    // Prime the next image
-    preload(images[(index + 1) % images.length]);
-    start();
+    // Start only after the initial image has loaded (helps mobile).
+    (async () => {
+        await waitForLoaded(img);
+        preload(images[(index + 1) % images.length]);
+        start();
+    })();
+});
+
+// Hero portrait placement (desktop right-side, mobile under badge)
+document.addEventListener('DOMContentLoaded', () => {
+    const portrait = document.getElementById('heroPortrait');
+    if (!portrait) return;
+
+    const desktopHost = document.querySelector('.hero-gallery');
+    const mobileHost = document.querySelector('[data-hero-portrait-slot="mobile"]');
+    if (!desktopHost || !mobileHost) return;
+
+    const mq = window.matchMedia('(max-width: 1024px)');
+
+    const syncPlacement = () => {
+        const target = mq.matches ? mobileHost : desktopHost;
+        if (portrait.parentElement === target) return;
+        target.appendChild(portrait);
+    };
+
+    // Initial + on breakpoint changes
+    syncPlacement();
+    mq.addEventListener?.('change', syncPlacement);
+
+    // Safety: also sync after orientation/resize
+    window.addEventListener('resize', () => {
+        window.clearTimeout(syncPlacement._t);
+        syncPlacement._t = window.setTimeout(syncPlacement, 120);
+    });
 });
 
 // Hero fast booking card -> WhatsApp
@@ -233,13 +300,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
-    // Parallax Effect for Hero Section
+    // Parallax (background only). On mobile, start a bit later so the hero image
+    // and content can settle before the effect kicks in.
     const heroSection = document.querySelector('.hero');
-    window.addEventListener('scroll', () => {
-        if (!heroSection) return;
-        const scrolled = window.pageYOffset;
-        heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
-    });
+    const heroBgImg = document.querySelector('.hero-bg img');
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (heroSection && heroBgImg && !reduceMotion) {
+        const mqMobile = window.matchMedia('(max-width: 768px)');
+        let rafId = 0;
+
+        const baseScale = 1.14;
+
+        const update = () => {
+            rafId = 0;
+            const y = window.scrollY || window.pageYOffset || 0;
+            const startOffset = mqMobile.matches ? 180 : 0;
+
+            if (y <= startOffset) {
+                heroBgImg.style.transform = `translate3d(0, 0, 0) scale(${baseScale})`;
+                return;
+            }
+
+            const rel = y - startOffset;
+            const max = Math.max(1, heroSection.offsetHeight);
+            const clamped = Math.min(rel, max);
+            const translate = clamped * 0.18;
+
+            heroBgImg.style.transform = `translate3d(0, ${translate}px, 0) scale(${baseScale})`;
+        };
+
+        const onScroll = () => {
+            if (rafId) return;
+            rafId = window.requestAnimationFrame(update);
+        };
+
+        update();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        mqMobile.addEventListener?.('change', onScroll);
+    }
 
     // Smooth Reveal Animation for Sections
     const observerOptions = {
@@ -261,27 +360,61 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(section);
     });
 
-    // Dynamic Navigation
+    // Dynamic Navigation + scroll color
     const nav = document.querySelector('nav');
-    let lastScroll = 0;
+    if (nav) {
+        const navMenu = nav.querySelector('.nav-menu');
 
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-        
-        if (currentScroll <= 0) {
-            nav.classList.remove('scroll-up');
-            return;
-        }
-        
-        if (currentScroll > lastScroll && !nav.classList.contains('scroll-down')) {
-            nav.classList.remove('scroll-up');
-            nav.classList.add('scroll-down');
-        } else if (currentScroll < lastScroll && nav.classList.contains('scroll-down')) {
-            nav.classList.remove('scroll-down');
-            nav.classList.add('scroll-up');
-        }
-        lastScroll = currentScroll;
-    });
+        let lastScroll = window.scrollY || window.pageYOffset || 0;
+        let rafId = 0;
+
+        const SCROLLED_AT = 16;
+        const HIDE_AFTER = 140;
+
+        const updateNav = () => {
+            rafId = 0;
+            const currentScroll = window.scrollY || window.pageYOffset || 0;
+
+            // Color / background change
+            nav.classList.toggle('scrolled', currentScroll > SCROLLED_AT);
+
+            // Never hide nav when menu is open (mobile)
+            const menuOpen = !!navMenu?.classList.contains('active');
+            if (menuOpen) {
+                nav.classList.remove('scroll-down');
+                nav.classList.add('scroll-up');
+                lastScroll = currentScroll;
+                return;
+            }
+
+            // Hide on scroll down, show on scroll up (after a little scroll)
+            if (currentScroll <= 0) {
+                nav.classList.remove('scroll-down');
+                nav.classList.remove('scroll-up');
+                lastScroll = currentScroll;
+                return;
+            }
+
+            if (currentScroll > lastScroll && currentScroll > HIDE_AFTER) {
+                nav.classList.add('scroll-down');
+                nav.classList.remove('scroll-up');
+            } else if (currentScroll < lastScroll) {
+                nav.classList.remove('scroll-down');
+                nav.classList.add('scroll-up');
+            }
+
+            lastScroll = currentScroll;
+        };
+
+        const onScroll = () => {
+            if (rafId) return;
+            rafId = window.requestAnimationFrame(updateNav);
+        };
+
+        updateNav();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+    }
 
     // Enhanced Form Validation and WhatsApp Submission
     const form = document.querySelector('.contact-form');

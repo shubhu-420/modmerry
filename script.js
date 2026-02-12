@@ -1021,10 +1021,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (moreBtn) {
             const total = matching.length;
             const hasMore = total > state.limit;
+            const isExpanded = state.limit > state.initial;
             moreBtn.style.display = total <= state.initial ? 'none' : 'inline-flex';
-            moreBtn.textContent = hasMore ? 'Load more' : 'Show less';
+            moreBtn.textContent = hasMore ? 'Show more' : (isExpanded ? 'Show less' : 'Show more');
             moreBtn.classList.toggle('is-primary', hasMore);
-            moreBtn.setAttribute('aria-expanded', String(!hasMore));
+            moreBtn.setAttribute('aria-expanded', String(isExpanded));
         }
     };
 
@@ -1039,16 +1040,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (moreBtn) {
             const total = matching.length;
             const hasMore = total > state.limit;
+            const isExpanded = state.limit > state.initial;
             moreBtn.style.display = total <= state.initial ? 'none' : 'inline-flex';
-            moreBtn.textContent = hasMore ? 'Load more' : 'Show less';
+            moreBtn.textContent = hasMore ? 'Show more' : (isExpanded ? 'Show less' : 'Show more');
             moreBtn.classList.toggle('is-primary', hasMore);
-            moreBtn.setAttribute('aria-expanded', String(!hasMore));
+            moreBtn.setAttribute('aria-expanded', String(isExpanded));
         }
     };
 
     moreBtn?.addEventListener('click', () => {
         const total = getMatchingItems().length;
         const hasMore = total > state.limit;
+        const isExpanded = state.limit > state.initial;
 
         if (hasMore) {
             state.limit = Math.min(state.limit + state.step, total);
@@ -1056,7 +1059,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Show less
+        if (!isExpanded) return;
+
+        // Show less (collapse back to the initial set)
         state.limit = state.initial;
         updatePaging();
         grid.scrollIntoView({ behavior: 'smooth', block: 'start' });

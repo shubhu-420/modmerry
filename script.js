@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Hero Slider Animation
-  const heroSection = document.querySelector('.hero-section');
+    const heroSection = document.querySelector('.hero');
   const heroContent = document.querySelector('.hero-content');
   
   // Animate hero content on page load
@@ -15,11 +15,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile Navigation Toggle
   const menuToggle = document.querySelector('.menu-toggle');
   const navMenu = document.querySelector('.nav-menu');
-  
-  menuToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-      menuToggle.classList.toggle('open');
-  });
+
+  const setMenuState = (isOpen) => {
+      navMenu.classList.toggle('active', isOpen);
+      menuToggle.classList.toggle('open', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  };
+
+  if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+          const isOpen = !navMenu.classList.contains('active');
+          setMenuState(isOpen);
+      });
+
+      navMenu.querySelectorAll('a[href^="#"]').forEach((link) => {
+          link.addEventListener('click', () => setMenuState(false));
+      });
+
+      document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') setMenuState(false);
+      });
+  }
 
   // Smooth Scrolling
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -33,8 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Form Submission Handler
   document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('bookingForm');
-    const inputs = form.querySelectorAll('input, select, textarea');
+        const form = document.getElementById('bookingForm');
+        if (!form) return;
+
+        const inputs = form.querySelectorAll('input, select, textarea');
 
     // Add floating label effect
     inputs.forEach(input => {
@@ -49,26 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Form submission handler
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Gather form data
-        const formData = {
-            fullName: document.getElementById('fullName').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            service: document.getElementById('service').value,
-            details: document.getElementById('details').value
-        };
-
-        // Here you would typically send the data to your server
-        console.log('Form submitted:', formData);
-        
-        // Show success message (you can customize this)
-        alert('Thank you! Your appointment request has been submitted.');
-        form.reset();
-    });
+    // Note: submit handling is managed later (WhatsApp flow)
 
     // Phone number formatting
     const phoneInput = document.getElementById('phone');
@@ -111,11 +111,132 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// Hero portrait reel (9:16) - auto rotates images
+document.addEventListener('DOMContentLoaded', () => {
+    const wrap = document.getElementById('heroPortrait');
+    const img = wrap?.querySelector('.hero-portrait-img');
+    if (!wrap || !img) return;
+
+    const bgWrap = document.querySelector('.hero-bg');
+    const bgImg = document.getElementById('heroBgImg');
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+
+    const imagesRaw = (wrap.dataset.images || '').split(',').map((s) => s.trim()).filter(Boolean);
+    const images = imagesRaw.length ? imagesRaw : [img.getAttribute('src')].filter(Boolean);
+    if (images.length <= 1 || reduceMotion) return;
+
+    let index = Math.max(0, images.indexOf(img.getAttribute('src')));
+    let timer = null;
+    let isPaused = false;
+
+    const preload = (src) => {
+        const pre = new Image();
+        pre.src = src;
+    };
+
+    const setImage = async (nextSrc) => {
+        if (!nextSrc || nextSrc === img.getAttribute('src')) return;
+        wrap.classList.add('is-fading');
+        bgWrap?.classList.add('is-fading');
+
+        // Preload + decode for smoother swap
+        try {
+            const pre = new Image();
+            pre.src = nextSrc;
+            await pre.decode?.();
+        } catch {
+            // ignore decode failures
+        }
+
+        window.setTimeout(() => {
+            img.src = nextSrc;
+            img.alt = 'Featured salon look';
+            wrap.classList.remove('is-fading');
+
+            if (bgImg) {
+                bgImg.src = nextSrc;
+            }
+            bgWrap?.classList.remove('is-fading');
+        }, 260);
+    };
+
+    const tick = () => {
+        if (isPaused) return;
+        index = (index + 1) % images.length;
+        const next = images[index];
+        preload(images[(index + 1) % images.length]);
+        setImage(next);
+    };
+
+    const start = () => {
+        if (timer) window.clearInterval(timer);
+        timer = window.setInterval(tick, 3200);
+    };
+
+    wrap.addEventListener('mouseenter', () => {
+        isPaused = true;
+    });
+
+    wrap.addEventListener('mouseleave', () => {
+        isPaused = false;
+    });
+
+    // Prime the next image
+    preload(images[(index + 1) % images.length]);
+    start();
+});
+
+// Hero fast booking card -> WhatsApp
+document.addEventListener('DOMContentLoaded', () => {
+    const card = document.querySelector('.hero-mini[data-wa-number]');
+    if (!card) return;
+
+    const number = String(card.dataset.waNumber || '').replace(/\D/g, '');
+    const rawText = String(card.dataset.waText || '').trim();
+    let text = rawText.length
+        ? rawText
+        : 'Hi Mod Merry Salon! I want to book an appointment. Please share available slots.';
+
+    // Allow authoring with %0A etc in HTML attributes.
+    try {
+        if (/%[0-9A-Fa-f]{2}/.test(text)) {
+            text = decodeURIComponent(text);
+        }
+    } catch {
+        // ignore decode issues
+    }
+
+    if (!number) return;
+
+    const buildUrl = () => `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+    const openWhatsApp = () => {
+        window.open(buildUrl(), '_blank', 'noopener');
+    };
+
+    // Make the whole card clickable, but don't hijack clicks on the buttons/links.
+    card.addEventListener('click', (event) => {
+        if (event.target.closest('a, button, input, select, textarea, label')) return;
+        openWhatsApp();
+    });
+
+    // Keyboard support when card itself is focused.
+    card.tabIndex = 0;
+    card.setAttribute('role', 'link');
+    card.addEventListener('keydown', (event) => {
+        if (event.target !== card) return;
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        openWhatsApp();
+    });
+});
+
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
     // Parallax Effect for Hero Section
-    const heroSection = document.querySelector('.hero-section');
+    const heroSection = document.querySelector('.hero');
     window.addEventListener('scroll', () => {
+        if (!heroSection) return;
         const scrolled = window.pageYOffset;
         heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
     });
@@ -162,8 +283,10 @@ document.addEventListener('DOMContentLoaded', () => {
         lastScroll = currentScroll;
     });
 
-    // Enhanced Form Validation and Submission
+    // Enhanced Form Validation and WhatsApp Submission
     const form = document.querySelector('.contact-form');
+    if (!form) return;
+
     const inputs = form.querySelectorAll('input, select, textarea');
 
     inputs.forEach(input => {
@@ -180,21 +303,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        const WA_NUMBER = '917887236773';
+
+        const fullName = (document.getElementById('fullName')?.value || '').trim();
+        const email = (document.getElementById('email')?.value || '').trim();
+        const phone = (document.getElementById('phone')?.value || '').trim();
+        const serviceSelect = document.getElementById('service');
+        const serviceLabel = (serviceSelect?.selectedOptions?.[0]?.textContent || serviceSelect?.value || '').trim();
+        const details = (document.getElementById('details')?.value || '').trim();
+
+        const lines = [
+            'Hi Mod Merry Salon! I want to schedule my experience / book an appointment.',
+            '',
+            `Name: ${fullName || '-'}`,
+            `Phone: ${phone || '-'}`,
+            `Email: ${email || '-'}`,
+            `Service: ${serviceLabel || '-'}`,
+            `Details: ${details || '-'}`,
+        ];
+
+        const message = lines.join('\n');
+        const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+
         const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.innerHTML = '<span class="loading"></span> Sending...';
-        submitBtn.disabled = true;
+        const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.85';
+        }
 
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
+            window.open(url, '_blank', 'noopener');
             form.reset();
-            showNotification('Message sent successfully!', 'success');
+            showNotification('Opening WhatsApp with your details…', 'success');
         } catch (error) {
-            showNotification('Something went wrong. Please try again.', 'error');
+            showNotification('Could not open WhatsApp. Please try again.', 'error');
         } finally {
-            submitBtn.innerHTML = 'Send Message';
-            submitBtn.disabled = false;
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '';
+                submitBtn.innerHTML = originalBtnHtml;
+            }
         }
     });
 
@@ -486,8 +636,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const progress = document.querySelector('.progress');
     const currentSlide = document.querySelector('.current');
     let current = 0;
+
+    const hasSlider = !!(slides.length && prevBtn && nextBtn && progress && currentSlide);
     
     function updateSlide() {
+        if (!hasSlider) return;
         slides.forEach(slide => slide.classList.remove('active'));
         slides[current].classList.add('active');
         currentSlide.textContent = (current + 1).toString().padStart(2, '0');
@@ -508,42 +661,56 @@ document.addEventListener('DOMContentLoaded', function() {
         current = (current - 1 + slides.length) % slides.length;
         updateSlide();
     }
-    
-    // Initialize progress bar
-    progress.style.width = '0';
-    setTimeout(() => {
-        progress.style.width = '100%';
-    }, 50);
-    
-    // Auto advance slides
-    let slideInterval = setInterval(nextSlide, 5000);
-    
-    // Event listeners
-    prevBtn.addEventListener('click', () => {
-        clearInterval(slideInterval);
-        prevSlide();
-        slideInterval = setInterval(nextSlide, 5000);
-    });
-    
-    nextBtn.addEventListener('click', () => {
-        clearInterval(slideInterval);
-        nextSlide();
-        slideInterval = setInterval(nextSlide, 5000);
-    });
 
-    // Typewriter effect
-    const typewriterText = document.querySelector('.typewriter-text');
-    const phrases = [
-        'Luxury Treatments',
-        'Expert Care',
-        'Timeless Beauty',
-        'Premium Experience',
-        'Personalized Service'
-    ];
+    if (hasSlider) {
+        // Initialize progress bar
+        progress.style.width = '0';
+        setTimeout(() => {
+            progress.style.width = '100%';
+        }, 50);
+
+        // Auto advance slides
+        let slideInterval = setInterval(nextSlide, 5000);
+
+        // Event listeners
+        prevBtn.addEventListener('click', () => {
+            clearInterval(slideInterval);
+            prevSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            clearInterval(slideInterval);
+            nextSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        });
+    }
+
+    // Typewriter effect (Hero title)
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    const typewriterText = document.querySelector('.hero-typewriter') || document.querySelector('.typewriter-text');
+    if (!typewriterText) return;
+
+    const rawPhrases = String(typewriterText.dataset.phrases || '').trim();
+    const phrases = rawPhrases
+        ? rawPhrases.split('|').map((s) => s.trim()).filter(Boolean)
+        : [
+            'Bridal • Party • Hair — done beautifully',
+            'Flawless bridal glow, all-day wear',
+            'Party glam that turns heads',
+            'Hair styling that stays picture-perfect',
+            'HD makeup for camera-ready confidence',
+            'Airbrush finish, lightweight feel'
+        ];
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    let typewriterDelay = 100;
+    let typewriterDelay = 60;
+
+    if (reduceMotion) {
+        typewriterText.textContent = phrases[0] || '';
+        return;
+    }
 
     function typeWriter() {
         const currentPhrase = phrases[phraseIndex];
@@ -551,94 +718,222 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isDeleting) {
             typewriterText.textContent = currentPhrase.substring(0, charIndex - 1);
             charIndex--;
-            typewriterDelay = 50;
+            typewriterDelay = 32;
         } else {
             typewriterText.textContent = currentPhrase.substring(0, charIndex + 1);
             charIndex++;
-            typewriterDelay = 100;
+            typewriterDelay = 60;
         }
 
         if (!isDeleting && charIndex === currentPhrase.length) {
             isDeleting = true;
-            typewriterDelay = 1500; // Pause at the end of typing
+            typewriterDelay = 1100; // Pause at the end of typing
         } else if (isDeleting && charIndex === 0) {
             isDeleting = false;
             phraseIndex = (phraseIndex + 1) % phrases.length;
-            typewriterDelay = 500; // Pause before starting new phrase
+            typewriterDelay = 350; // Pause before starting new phrase
         }
 
         setTimeout(typeWriter, typewriterDelay);
     }
 
     // Start the typewriter effect
-    setTimeout(typeWriter, 1500); // Delay start to allow other animations to complete
+    setTimeout(typeWriter, 600); // Start sooner
 });
 
 
-//here is the gallery
-document.addEventListener('DOMContentLoaded', function() {
-    const galleryTrack = document.querySelector('.gallery-track');
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    const prevBtn = document.querySelector('.gallery-nav.prev');
-    const nextBtn = document.querySelector('.gallery-nav.next');
-    const progress = document.querySelector('.progress');
-    const currentSlide = document.querySelector('.gallery-counter .current');
-    const totalSlides = document.querySelector('.gallery-counter .total');
-    let current = 0;
+// Gallery grid lightbox (shows all photos)
+document.addEventListener('DOMContentLoaded', () => {
+    const items = Array.from(document.querySelectorAll('.salon-gallery-item'));
+    const lightbox = document.getElementById('lightbox');
+    if (!items.length || !lightbox) return;
 
-    // Set total number of slides
-    totalSlides.textContent = galleryItems.length.toString().padStart(2, '0');
+    const backdrop = lightbox.querySelector('.lightbox-backdrop');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    const prevBtn = lightbox.querySelector('.lightbox-nav.prev');
+    const nextBtn = lightbox.querySelector('.lightbox-nav.next');
+    const img = lightbox.querySelector('.lightbox-img');
+    const counter = lightbox.querySelector('.lightbox-counter');
+    const caption = lightbox.querySelector('.lightbox-caption');
 
-    function updateGallery() {
-        galleryItems.forEach((item, index) => {
-            item.classList.remove('active');
-            item.style.opacity = '0';
-            item.style.transform = 'scale(0.9)';
-            item.style.zIndex = '0';
+    let currentIndex = 0;
+    let lastTrigger = null;
+
+    const getVisibleItems = () => items.filter((btn) => !btn.classList.contains('is-hidden') && !btn.classList.contains('is-collapsed'));
+
+    const setOpen = (open) => {
+        lightbox.classList.toggle('is-open', open);
+        lightbox.setAttribute('aria-hidden', String(!open));
+
+        if (open) {
+            document.body.style.overflow = 'hidden';
+            closeBtn?.focus();
+        } else {
+            document.body.style.overflow = '';
+            lastTrigger?.focus?.();
+        }
+    };
+
+    const showIndex = (index) => {
+        const visible = getVisibleItems();
+        if (!visible.length) return;
+        const safeIndex = (index + visible.length) % visible.length;
+        currentIndex = safeIndex;
+
+        const active = visible[safeIndex];
+        const src = active.dataset.full;
+        const title = active.dataset.title || active.querySelector('img')?.alt || '';
+
+        if (src) img.src = src;
+        img.alt = title ? `Selected: ${title}` : 'Selected gallery photo';
+        if (caption) caption.textContent = title;
+
+        counter.textContent = `${String(safeIndex + 1).padStart(2, '0')} / ${String(visible.length).padStart(2, '0')}`;
+    };
+
+    const openFrom = (index) => {
+        showIndex(index);
+        setOpen(true);
+    };
+
+    const close = () => setOpen(false);
+    const next = () => showIndex(currentIndex + 1);
+    const prev = () => showIndex(currentIndex - 1);
+
+    items.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const visible = getVisibleItems();
+            const index = visible.indexOf(btn);
+            if (index === -1) return;
+            lastTrigger = btn;
+            openFrom(index);
         });
-        
-        galleryItems[current].classList.add('active');
-        galleryItems[current].style.opacity = '1';
-        galleryItems[current].style.transform = 'scale(1)';
-        galleryItems[current].style.zIndex = '10';
-        
-        currentSlide.textContent = (current + 1).toString().padStart(2, '0');
-        
-        // Reset and start progress bar
-        progress.style.width = '0';
-        setTimeout(() => {
-            progress.style.width = '100%';
-        }, 50);
-    }
-
-    function nextSlide() {
-        current = (current + 1) % galleryItems.length;
-        updateGallery();
-    }
-
-    function prevSlide() {
-        current = (current - 1 + galleryItems.length) % galleryItems.length;
-        updateGallery();
-    }
-
-    // Initialize progress bar
-    updateGallery();
-
-    // Auto advance slides smoothly
-    let slideInterval = setInterval(nextSlide, 5000);
-
-    // Event listeners
-    prevBtn.addEventListener('click', () => {
-        clearInterval(slideInterval);
-        prevSlide();
-        slideInterval = setInterval(nextSlide, 5000);
     });
 
-    nextBtn.addEventListener('click', () => {
-        clearInterval(slideInterval);
-        nextSlide();
-        slideInterval = setInterval(nextSlide, 5000);
+    backdrop?.addEventListener('click', () => close());
+    closeBtn?.addEventListener('click', () => close());
+    nextBtn?.addEventListener('click', () => next());
+    prevBtn?.addEventListener('click', () => prev());
+
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('is-open')) return;
+
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowRight') next();
+        if (e.key === 'ArrowLeft') prev();
     });
+});
+
+// Gallery filters + live count
+document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.querySelector('[data-gallery-grid]') || document.querySelector('.salon-gallery-grid');
+    const filtersWrap = document.querySelector('[data-gallery-filters]');
+    if (!grid || !filtersWrap) return;
+
+    const countEl = document.getElementById('galleryCount');
+    const moreBtn = document.getElementById('galleryLoadMore');
+    const filterButtons = Array.from(filtersWrap.querySelectorAll('button[data-filter]'));
+    const items = Array.from(grid.querySelectorAll('.salon-gallery-item'));
+
+    const state = {
+        filter: 'all',
+        initial: 12,
+        step: 12,
+        limit: 12,
+    };
+
+    const getMatchingItems = () => {
+        return items.filter((btn) => {
+            const category = btn.dataset.category || 'makeup';
+            return state.filter === 'all' || category === state.filter;
+        });
+    };
+
+    const updateCount = () => {
+        if (!countEl) return;
+        const total = getMatchingItems().length;
+        const showing = items.filter((btn) => !btn.classList.contains('is-hidden') && !btn.classList.contains('is-collapsed')).length;
+        countEl.textContent = `Showing ${showing} of ${total}`;
+    };
+
+    const setActiveButton = (activeFilter) => {
+        filterButtons.forEach((btn) => {
+            const isActive = btn.dataset.filter === activeFilter;
+            btn.classList.toggle('is-active', isActive);
+            btn.setAttribute('aria-pressed', String(isActive));
+        });
+    };
+
+    const applyFilter = (filter) => {
+        state.filter = filter;
+        state.limit = state.initial;
+
+        items.forEach((btn) => {
+            const category = btn.dataset.category || 'makeup';
+            const matches = filter === 'all' || category === filter;
+            btn.classList.toggle('is-hidden', !matches);
+            btn.setAttribute('aria-hidden', String(!matches));
+            btn.classList.remove('is-collapsed');
+        });
+
+        // Collapse anything beyond the initial limit (within the matching set)
+        const matching = getMatchingItems();
+        matching.forEach((btn, index) => {
+            btn.classList.toggle('is-collapsed', index >= state.limit);
+        });
+
+        setActiveButton(filter);
+        updateCount();
+
+        if (moreBtn) {
+            const total = matching.length;
+            const hasMore = total > state.limit;
+            moreBtn.style.display = total <= state.initial ? 'none' : 'inline-flex';
+            moreBtn.textContent = hasMore ? 'Load more' : 'Show less';
+            moreBtn.classList.toggle('is-primary', hasMore);
+            moreBtn.setAttribute('aria-expanded', String(!hasMore));
+        }
+    };
+
+    const updatePaging = () => {
+        const matching = getMatchingItems();
+        matching.forEach((btn, index) => {
+            btn.classList.toggle('is-collapsed', index >= state.limit);
+        });
+
+        updateCount();
+
+        if (moreBtn) {
+            const total = matching.length;
+            const hasMore = total > state.limit;
+            moreBtn.style.display = total <= state.initial ? 'none' : 'inline-flex';
+            moreBtn.textContent = hasMore ? 'Load more' : 'Show less';
+            moreBtn.classList.toggle('is-primary', hasMore);
+            moreBtn.setAttribute('aria-expanded', String(!hasMore));
+        }
+    };
+
+    moreBtn?.addEventListener('click', () => {
+        const total = getMatchingItems().length;
+        const hasMore = total > state.limit;
+
+        if (hasMore) {
+            state.limit = Math.min(state.limit + state.step, total);
+            updatePaging();
+            return;
+        }
+
+        // Show less
+        state.limit = state.initial;
+        updatePaging();
+        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    filterButtons.forEach((btn) => {
+        btn.addEventListener('click', () => applyFilter(btn.dataset.filter || 'all'));
+    });
+
+    applyFilter('all');
 });
 
 
